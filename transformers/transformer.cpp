@@ -1,6 +1,6 @@
 #include <iostream>
 #include "gl_framework.cpp"
-#include "transformers.cpp"
+#include "transformers.hpp"
 
 
 void renderGL(void) {
