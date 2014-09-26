@@ -7,7 +7,7 @@ CPPFLAGS=-I/usr/local/include
 
 BIN=transformer
 SRCS=transformer.cpp 
-INCLUDES=transformer.hpp
+INCLUDES=transformer.hpp gl_framework.hpp gl_framework.cpp
 
 
 
