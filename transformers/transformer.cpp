@@ -1,10 +1,10 @@
 #include <iostream>
 #include "gl_framework.cpp"
-#include "transformers.hpp"
+#include "transformer.hpp"
 
 
 void renderGL(void) {
-	render_drawing();
+	
 }
 
 int main(int argc, char *argv[]){
