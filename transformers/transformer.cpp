@@ -1,10 +1,19 @@
 #include <iostream>
 #include "gl_framework.cpp"
-#include "transformer.hpp"
+#include "model.hpp"
 
 
 void renderGL(void) {
-	
+	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+	glLoadIdentity();
+	glRotatef(csX75::leftShoulderAngle,0,0,1.0);
+	glPushMatrix();
+	glCallList(1);
+	glPopMatrix();
+	glTranslatef(0.9,0,0);
+	glRotatef(csX75::leftElbowAngle,0, 0.0,1.0);
+	glCallList(2);
+
 }
 
 int main(int argc, char *argv[]){
@@ -48,6 +57,8 @@ int main(int argc, char *argv[]){
 	//Initialize GL state
 	csX75::initGL();
 
+	model::makeModel();
+ 
 	// Loop until the user closes the window
 	// Run the state is set to close window by clicking in close or through keyboard like Alt+F4 
 	while (glfwWindowShouldClose(window) == 0)

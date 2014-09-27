@@ -6,8 +6,8 @@ LDFLAGS=-L/usr/local/lib
 CPPFLAGS=-I/usr/local/include
 
 BIN=transformer
-SRCS=transformer.cpp 
-INCLUDES=transformer.hpp gl_framework.hpp gl_framework.cpp
+SRCS=transformer.cpp upperArm.cpp lowerArm.cpp model.cpp 
+INCLUDES=transformer.hpp gl_framework.hpp  model.hpp
 
 
 

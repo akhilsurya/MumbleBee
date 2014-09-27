@@ -20,10 +20,12 @@
 
 #include "gl_framework.hpp"
 
+
 namespace csX75
 {
   int win_width;
   int win_height;
+
 
   //! Initialize GL State
   void initGL(void)
@@ -32,6 +34,9 @@ namespace csX75
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //Set depth buffer furthest depth
     glClearDepth(1.0);
+    leftShoulderAngle=0;
+    leftElbowAngle=0;
+    
   }
   
   //!GLFW Error Callback
@@ -45,9 +50,9 @@ namespace csX75
   {
     if  ( height == 0 ) height = 1;
 
-    glMatrixMode( GL_PROJECTION );
+    glMatrixMode( GL_MODELVIEW);
     glLoadIdentity();
-
+    glEnable(GL_DEPTH_TEST);
     //Draw to the whole window
     glViewport( 0, 0, width, height );
 
@@ -69,11 +74,17 @@ namespace csX75
   }
   
   //!GLFW keyboard callback
+
   void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
   {
     //!Close the window if the ESC key was pressed
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
+    if (key == GLFW_KEY_A && action == GLFW_PRESS)
+      leftShoulderAngle+=10;
+      
+    if (key == GLFW_KEY_S && action == GLFW_PRESS)
+      leftElbowAngle-=10;
   }
 };  
   
