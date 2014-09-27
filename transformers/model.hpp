@@ -3,4 +3,5 @@ namespace model{
 	void makeModel();
 	void makeUpperArm();
 	void makeLowerArm();
+	void makeTorso();
 }

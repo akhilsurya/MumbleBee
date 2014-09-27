@@ -6,14 +6,56 @@
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glRotatef(csX75::leftShoulderAngle,0,0,1.0);
+	glRotatef(20,-0.5,-1.0,0.0);
+	
+	/* The torso */
 	glPushMatrix();
-	glCallList(1);
+	{
+		glScalef(2,2,2);
+		glCallList(3);
+	}
 	glPopMatrix();
-	glTranslatef(0.9,0,0);
-	glRotatef(csX75::leftElbowAngle,0, 0.0,1.0);
-	glCallList(2);
 
+	/* The right arm */
+	glPushMatrix();
+	{
+		glScalef(0.5,0.5,0.5);
+
+		glTranslatef(0.8,0.65,0.0);
+		glRotatef(-csX75::rightShoulderAngle,0,0,1.0);
+
+		glPushMatrix(); 
+		{
+			glCallList(1);
+		}
+		glPopMatrix();
+
+		glTranslatef(0.9,0,0);
+		glRotatef(-csX75::rightElbowAngle,0, 0.0,1.0);
+		glCallList(2);
+	}
+	glPopMatrix();
+
+	/* The left arm */
+	glPushMatrix();
+	{
+		glScalef(0.5,0.5,0.5);
+
+		glTranslatef(-0.8,0.65,0.0);
+		glRotatef(-180,0,0,1);
+		glRotatef(csX75::leftShoulderAngle,0,0,1.0);
+
+		glPushMatrix(); 
+		{
+			glCallList(1);
+		}
+		glPopMatrix();
+
+		glTranslatef(0.9,0,0);
+		glRotatef(csX75::leftElbowAngle,0, 0.0,1.0);
+		glCallList(2);
+	}
+	glPopMatrix();
 }
 
 int main(int argc, char *argv[]){

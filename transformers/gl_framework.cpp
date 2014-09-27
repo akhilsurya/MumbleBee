@@ -36,7 +36,8 @@ namespace csX75
     glClearDepth(1.0);
     leftShoulderAngle=0;
     leftElbowAngle=0;
-    
+    rightShoulderAngle=0;
+    rightElbowAngle =0;
   }
   
   //!GLFW Error Callback
@@ -80,11 +81,19 @@ namespace csX75
     //!Close the window if the ESC key was pressed
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
-    if (key == GLFW_KEY_A && action == GLFW_PRESS)
-      leftShoulderAngle+=10;
+    if (key == GLFW_KEY_A && action == GLFW_PRESS && leftShoulderAngle <= 70) {
+      leftShoulderAngle+=10; 
+    }
       
-    if (key == GLFW_KEY_S && action == GLFW_PRESS)
+    if (key == GLFW_KEY_S && action == GLFW_PRESS && leftElbowAngle >= -120) {
       leftElbowAngle-=10;
+    }
+      
+    if (key == GLFW_KEY_D && action == GLFW_PRESS && rightShoulderAngle <= 70)
+      rightShoulderAngle+=10;
+    if (key == GLFW_KEY_F && action == GLFW_PRESS && rightElbowAngle >= -120)
+      rightElbowAngle-=10;
+
   }
 };  
   

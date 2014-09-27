@@ -39,7 +39,8 @@ namespace csX75
 
 float leftShoulderAngle;
 float leftElbowAngle;
-
+float rightShoulderAngle;
+float rightElbowAngle;
 };
 
 #endif
