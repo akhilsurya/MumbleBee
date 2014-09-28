@@ -38,6 +38,12 @@ namespace csX75
     leftElbowAngle=0;
     rightShoulderAngle=0;
     rightElbowAngle =0;
+
+    leftThighAngle = 0;
+    rightThighAngle = 0;
+
+    leftLegAngle = 0;
+    rightLegAngle = 0;
   }
   
   //!GLFW Error Callback
@@ -89,10 +95,30 @@ namespace csX75
       leftElbowAngle-=10;
     }
       
-    if (key == GLFW_KEY_D && action == GLFW_PRESS && rightShoulderAngle <= 70)
+    if (key == GLFW_KEY_D && action == GLFW_PRESS && rightShoulderAngle <= 70) {
       rightShoulderAngle+=10;
-    if (key == GLFW_KEY_F && action == GLFW_PRESS && rightElbowAngle >= -120)
+    }
+      
+    if (key == GLFW_KEY_F && action == GLFW_PRESS && rightElbowAngle >= -120) {
       rightElbowAngle-=10;
+    }
+
+    if (key == GLFW_KEY_G && action == GLFW_PRESS && leftThighAngle >= -20) {
+      leftThighAngle-=4; 
+    }
+      
+    if (key == GLFW_KEY_J && action == GLFW_PRESS && rightThighAngle >= -20) {
+      rightThighAngle-=4;
+    } 
+
+    if (key == GLFW_KEY_H && action == GLFW_PRESS && leftLegAngle <= 20) {
+      leftLegAngle+=4; 
+    }
+
+    if (key == GLFW_KEY_K && action == GLFW_PRESS && rightLegAngle <= 20) {
+      rightLegAngle+=4; 
+    }
+
 
   }
 };  

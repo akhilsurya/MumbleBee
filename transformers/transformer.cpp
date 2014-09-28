@@ -6,8 +6,8 @@
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glRotatef(20,-0.5,-1.0,0.0);
-	
+	glRotatef(80,+0.5,-1.0,0.0);
+	//glTranslatef(0,1,0);
 	/* The torso */
 	glPushMatrix();
 	{
@@ -47,7 +47,7 @@ void renderGL(void) {
 
 		glPushMatrix(); 
 		{
-			glCallList(1);
+			glCallList(2);
 		}
 		glPopMatrix();
 
@@ -56,6 +56,48 @@ void renderGL(void) {
 		glCallList(2);
 	}
 	glPopMatrix();
+	
+
+	glPushMatrix();
+	{
+		glScalef(0.5,0.5,0.5);
+
+		glTranslatef(-0.4,-0.65,0.0);
+		glRotatef(90,0,0,1);
+		glRotatef(csX75::leftThighAngle,0.0,1.0,0.0);
+
+		glPushMatrix(); 
+		{
+			glCallList(4);
+		}
+		glPopMatrix();
+
+		glTranslatef(-1,0,0);
+		glRotatef(csX75::leftLegAngle,0, 1.0,0.0);
+		glCallList(5);
+	}
+	glPopMatrix();
+
+	glPushMatrix();
+	{
+		glScalef(0.5,0.5,0.5);
+
+		glTranslatef(+0.4,-0.65,0.0);
+		glRotatef(90,0,0,1);
+		glRotatef(csX75::rightThighAngle,0.0,1.0,0.0);
+
+		glPushMatrix(); 
+		{
+			glCallList(4);
+		}
+		glPopMatrix();
+
+		glTranslatef(-1,0,0);
+		glRotatef(csX75::rightLegAngle,0.0,1.0,0.0);
+		glCallList(5);
+	}
+	glPopMatrix();
+
 }
 
 int main(int argc, char *argv[]){
