@@ -6,7 +6,7 @@
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
-	glRotatef(80,+0.5,-1.0,0.0);
+	glRotatef(10,+0.5,-1.0,0.0);
 	//glTranslatef(0,1,0);
 	/* The torso */
 	glPushMatrix();
@@ -47,7 +47,7 @@ void renderGL(void) {
 
 		glPushMatrix(); 
 		{
-			glCallList(2);
+			glCallList(1);
 		}
 		glPopMatrix();
 
@@ -57,7 +57,7 @@ void renderGL(void) {
 	}
 	glPopMatrix();
 	
-
+	/* Left Leg */
 	glPushMatrix();
 	{
 		glScalef(0.5,0.5,0.5);
@@ -77,6 +77,8 @@ void renderGL(void) {
 		glCallList(5);
 	}
 	glPopMatrix();
+	
+	/* Right Leg */
 
 	glPushMatrix();
 	{
@@ -97,6 +99,30 @@ void renderGL(void) {
 		glCallList(5);
 	}
 	glPopMatrix();
+	
+	/* Neck and head */
+	
+	glPushMatrix();
+	{
+		glTranslatef(0.0, 0.4, 0.0);
+		
+		glRotatef(csX75::neckAngle, 1.0, 0.0, 0.0);
+		
+		glPushMatrix();
+		{
+			glCallList(6);
+		}
+		glPopMatrix();
+		glTranslatef(0.0, 0.2, 0.0);
+		
+		glRotatef(csX75::headAngle, 0.0, 1.0, 0.0);
+		
+		glCallList(7);
+		
+	}
+	glPopMatrix();
+	
+	
 
 }
 

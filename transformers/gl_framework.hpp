@@ -47,6 +47,9 @@ float rightThighAngle;
 
 float leftLegAngle;
 float rightLegAngle;
+
+float neckAngle;
+float headAngle;
 };
 
 #endif

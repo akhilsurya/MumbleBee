@@ -44,6 +44,9 @@ namespace csX75
 
     leftLegAngle = 0;
     rightLegAngle = 0;
+    
+    neckAngle = 0;
+    headAngle = 0;
   }
   
   //!GLFW Error Callback
@@ -119,7 +122,13 @@ namespace csX75
       rightLegAngle+=4; 
     }
 
-
+	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+		neckAngle-=2;
+	}
+	
+	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
+		headAngle-=3;
+	}
   }
 };  
   
