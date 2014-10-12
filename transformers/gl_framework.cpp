@@ -20,12 +20,13 @@
 
 #include "gl_framework.hpp"
 
-
+#include "model.hpp"
+model model1;
 namespace csX75
 {
   int win_width;
   int win_height;
-
+  
 
   //! Initialize GL State
   void initGL(void)
@@ -34,19 +35,6 @@ namespace csX75
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     //Set depth buffer furthest depth
     glClearDepth(1.0);
-    leftShoulderAngle=0;
-    leftElbowAngle=0;
-    rightShoulderAngle=0;
-    rightElbowAngle =0;
-
-    leftThighAngle = 0;
-    rightThighAngle = 0;
-
-    leftLegAngle = 0;
-    rightLegAngle = 0;
-    
-    neckAngle = 0;
-    headAngle = 0;
   }
   
   //!GLFW Error Callback
@@ -90,44 +78,45 @@ namespace csX75
     //!Close the window if the ESC key was pressed
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
-    if (key == GLFW_KEY_A && action == GLFW_PRESS && leftShoulderAngle <= 70) {
-      leftShoulderAngle+=10; 
+      
+    if (key == GLFW_KEY_A && action == GLFW_PRESS && model1.leftShoulderAngle <= 70) {
+      model1.leftShoulderAngle+=10; 
     }
       
-    if (key == GLFW_KEY_S && action == GLFW_PRESS && leftElbowAngle >= -120) {
-      leftElbowAngle-=10;
+    if (key == GLFW_KEY_S && action == GLFW_PRESS && model1.leftElbowAngle >= -120) {
+      model1.leftElbowAngle-=10;
     }
       
-    if (key == GLFW_KEY_D && action == GLFW_PRESS && rightShoulderAngle <= 70) {
-      rightShoulderAngle+=10;
+    if (key == GLFW_KEY_D && action == GLFW_PRESS && model1.rightShoulderAngle <= 70) {
+      model1.rightShoulderAngle+=10;
     }
       
-    if (key == GLFW_KEY_F && action == GLFW_PRESS && rightElbowAngle >= -120) {
-      rightElbowAngle-=10;
+    if (key == GLFW_KEY_F && action == GLFW_PRESS && model1.rightElbowAngle >= -120) {
+      model1.rightElbowAngle-=10;
     }
 
-    if (key == GLFW_KEY_G && action == GLFW_PRESS && leftThighAngle >= -20) {
-      leftThighAngle-=4; 
+    if (key == GLFW_KEY_G && action == GLFW_PRESS && model1.leftThighAngle >= -20) {
+      model1.leftThighAngle-=4; 
     }
       
-    if (key == GLFW_KEY_J && action == GLFW_PRESS && rightThighAngle >= -20) {
-      rightThighAngle-=4;
+    if (key == GLFW_KEY_J && action == GLFW_PRESS && model1.rightThighAngle >= -20) {
+      model1.rightThighAngle-=4;
     } 
 
-    if (key == GLFW_KEY_H && action == GLFW_PRESS && leftLegAngle <= 20) {
-      leftLegAngle+=4; 
+    if (key == GLFW_KEY_H && action == GLFW_PRESS && model1.leftLegAngle <= 20) {
+      model1.leftLegAngle+=4; 
     }
 
-    if (key == GLFW_KEY_K && action == GLFW_PRESS && rightLegAngle <= 20) {
-      rightLegAngle+=4; 
+    if (key == GLFW_KEY_K && action == GLFW_PRESS && model1.rightLegAngle <= 20) {
+		model1.rightLegAngle+=4; 
     }
 
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-		neckAngle-=2;
+		model1.neckAngle-=2;
 	}
 	
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-		headAngle-=3;
+		model1.headAngle-=3;
 	}
   }
 };  

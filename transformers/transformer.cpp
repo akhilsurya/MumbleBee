@@ -1,129 +1,13 @@
 #include <iostream>
 #include "gl_framework.cpp"
-#include "model.hpp"
-
 
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
+	glScalef(0.5,0.5,0.5);
 	glRotatef(10,+0.5,-1.0,0.0);
-	//glTranslatef(0,1,0);
-	/* The torso */
-	glPushMatrix();
-	{
-		glScalef(2,2,2);
-		glCallList(3);
-	}
-	glPopMatrix();
-
-	/* The right arm */
-	glPushMatrix();
-	{
-		glScalef(0.5,0.5,0.5);
-
-		glTranslatef(0.8,0.65,0.0);
-		glRotatef(-csX75::rightShoulderAngle,0,0,1.0);
-
-		glPushMatrix(); 
-		{
-			glCallList(1);
-		}
-		glPopMatrix();
-
-		glTranslatef(0.9,0,0);
-		glRotatef(-csX75::rightElbowAngle,0, 0.0,1.0);
-		glCallList(2);
-	}
-	glPopMatrix();
-
-	/* The left arm */
-	glPushMatrix();
-	{
-		glScalef(0.5,0.5,0.5);
-
-		glTranslatef(-0.8,0.65,0.0);
-		glRotatef(-180,0,0,1);
-		glRotatef(csX75::leftShoulderAngle,0,0,1.0);
-
-		glPushMatrix(); 
-		{
-			glCallList(1);
-		}
-		glPopMatrix();
-
-		glTranslatef(0.9,0,0);
-		glRotatef(csX75::leftElbowAngle,0, 0.0,1.0);
-		glCallList(2);
-	}
-	glPopMatrix();
-	
-	/* Left Leg */
-	glPushMatrix();
-	{
-		glScalef(0.5,0.5,0.5);
-
-		glTranslatef(-0.4,-0.65,0.0);
-		glRotatef(90,0,0,1);
-		glRotatef(csX75::leftThighAngle,0.0,1.0,0.0);
-
-		glPushMatrix(); 
-		{
-			glCallList(4);
-		}
-		glPopMatrix();
-
-		glTranslatef(-1,0,0);
-		glRotatef(csX75::leftLegAngle,0, 1.0,0.0);
-		glCallList(5);
-	}
-	glPopMatrix();
-	
-	/* Right Leg */
-
-	glPushMatrix();
-	{
-		glScalef(0.5,0.5,0.5);
-
-		glTranslatef(+0.4,-0.65,0.0);
-		glRotatef(90,0,0,1);
-		glRotatef(csX75::rightThighAngle,0.0,1.0,0.0);
-
-		glPushMatrix(); 
-		{
-			glCallList(4);
-		}
-		glPopMatrix();
-
-		glTranslatef(-1,0,0);
-		glRotatef(csX75::rightLegAngle,0.0,1.0,0.0);
-		glCallList(5);
-	}
-	glPopMatrix();
-	
-	/* Neck and head */
-	
-	glPushMatrix();
-	{
-		glTranslatef(0.0, 0.4, 0.0);
-		
-		glRotatef(csX75::neckAngle, 1.0, 0.0, 0.0);
-		
-		glPushMatrix();
-		{
-			glCallList(6);
-		}
-		glPopMatrix();
-		glTranslatef(0.0, 0.2, 0.0);
-		
-		glRotatef(csX75::headAngle, 0.0, 1.0, 0.0);
-		
-		glCallList(7);
-		
-	}
-	glPopMatrix();
-	
-	
-
+	model1.makeModel();	
+	model1.drawModel();
 }
 
 int main(int argc, char *argv[]){
@@ -166,8 +50,6 @@ int main(int argc, char *argv[]){
 	csX75::framebuffer_size_callback(window, win_width, win_height);
 	//Initialize GL state
 	csX75::initGL();
-
-	model::makeModel();
  
 	// Loop until the user closes the window
 	// Run the state is set to close window by clicking in close or through keyboard like Alt+F4 

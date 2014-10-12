@@ -35,21 +35,6 @@ namespace csX75
   void framebuffer_size_callback(GLFWwindow* window, int width, int height);
   //!GLFW keyboard callback
   void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods);
-
-
-float leftShoulderAngle;
-float leftElbowAngle;
-float rightShoulderAngle;
-float rightElbowAngle;
-
-float leftThighAngle;
-float rightThighAngle;
-
-float leftLegAngle;
-float rightLegAngle;
-
-float neckAngle;
-float headAngle;
 };
 
 #endif

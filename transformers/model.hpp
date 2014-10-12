@@ -1,17 +1,7 @@
 #include <GL/glew.h>
-namespace model{
-	void makeModel();
-	void makeUpperArm();
-	void makeLowerArm();
-	void makeTorso();
-	void makeThigh();
-	void makeLeg();
-	void makeNeck();
-	void makeHead();
-}
-
-
-struct model {
+#include <iostream>
+using namespace std;	
+struct model{
 	float leftShoulderAngle;
 	float leftElbowAngle;
 	float rightShoulderAngle;
@@ -30,6 +20,8 @@ struct model {
 	
 	void makeModel();
 	
+	void drawModel();
+	
 	private :
 	
 	void makeUpperArm();
@@ -39,4 +31,8 @@ struct model {
 	void makeLeg();
 	void makeNeck();
 	void makeHead();
-}
+	
+	void makeCube();
+	
+};
+
