@@ -18,10 +18,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#include <unistd.h>
 #include "gl_framework.hpp"
 
 #include "model.hpp"
 model model1;
+
+void renderGL(void);
+
 namespace csX75
 {
   int win_width;
@@ -79,44 +83,56 @@ namespace csX75
     if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
       glfwSetWindowShouldClose(window, GL_TRUE);
       
-    if (key == GLFW_KEY_A && action == GLFW_PRESS && model1.leftShoulderAngle <= 70) {
-      model1.leftShoulderAngle+=10; 
+    if (key == GLFW_KEY_A && action == GLFW_PRESS ) {
+      model1.leftShoulderAngleZ+=10; 
     }
       
-    if (key == GLFW_KEY_S && action == GLFW_PRESS && model1.leftElbowAngle >= -120) {
-      model1.leftElbowAngle-=10;
+    if (key == GLFW_KEY_S && action == GLFW_PRESS ) {
+      model1.leftElbowAngleZ-=10;
     }
       
-    if (key == GLFW_KEY_D && action == GLFW_PRESS && model1.rightShoulderAngle <= 70) {
-      model1.rightShoulderAngle+=10;
+    if (key == GLFW_KEY_D && action == GLFW_PRESS ) {
+      model1.rightShoulderAngleZ+=10;
     }
       
-    if (key == GLFW_KEY_F && action == GLFW_PRESS && model1.rightElbowAngle >= -120) {
-      model1.rightElbowAngle-=10;
+    if (key == GLFW_KEY_F && action == GLFW_PRESS ) {
+      model1.rightElbowAngleZ-=10;
     }
 
-    if (key == GLFW_KEY_G && action == GLFW_PRESS && model1.leftThighAngle >= -20) {
-      model1.leftThighAngle-=4; 
+    if (key == GLFW_KEY_G && action == GLFW_PRESS ) {
+      model1.leftThighAngleZ-=4; 
     }
       
-    if (key == GLFW_KEY_J && action == GLFW_PRESS && model1.rightThighAngle >= -20) {
-      model1.rightThighAngle-=4;
+    if (key == GLFW_KEY_J && action == GLFW_PRESS ) {
+      model1.rightThighAngleZ-=4;
     } 
 
-    if (key == GLFW_KEY_H && action == GLFW_PRESS && model1.leftLegAngle <= 20) {
-      model1.leftLegAngle+=4; 
+    if (key == GLFW_KEY_H && action == GLFW_PRESS ) {
+      model1.leftLegAngleZ+=4; 
     }
 
-    if (key == GLFW_KEY_K && action == GLFW_PRESS && model1.rightLegAngle <= 20) {
-		model1.rightLegAngle+=4; 
+    if (key == GLFW_KEY_K && action == GLFW_PRESS ) {
+		model1.rightLegAngleZ+=4; 
     }
 
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
-		model1.neckAngle-=2;
+		model1.neckAngleZ-=2;
 	}
 	
 	if (key == GLFW_KEY_P && action == GLFW_PRESS) {
-		model1.headAngle-=3;
+		model1.headAngleZ-=3;
+	}
+	
+	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+		for(int i=0; i<60; i++) {
+			model1.leftShoulderAngleZ++;
+			model1.rightShoulderAngleZ++;
+			model1.leftLegAngleZ-=2.8;
+			model1.rightLegAngleZ-=2.8;
+		 	renderGL();
+		 	glfwSwapBuffers(window);
+		 	usleep(10000);
+		 }
 	}
   }
 };  

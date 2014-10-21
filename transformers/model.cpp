@@ -1,19 +1,45 @@
 #include "model.hpp"
 
 model::model(){
-	leftShoulderAngle=0;
-    leftElbowAngle=0;
-    rightShoulderAngle=0;
-    rightElbowAngle =0;
-
-    leftThighAngle = 0;
-    rightThighAngle = 0;
-
-    leftLegAngle = 0;
-    rightLegAngle = 0;
+	leftShoulderAngleX=0;
+	leftShoulderAngleY=0;
+	leftShoulderAngleZ=0;
+	
+    leftElbowAngleX=0;
+    leftElbowAngleY=0;
+    leftElbowAngleZ=0;
     
-    neckAngle = 0;
-    headAngle = 0;
+    rightShoulderAngleX=0;
+    rightShoulderAngleY=0;
+    rightShoulderAngleZ=0;
+    
+    rightElbowAngleX =0;
+    rightElbowAngleY =0;
+    rightElbowAngleZ =0;
+
+    leftThighAngleX = 0;
+    leftThighAngleY = 0;
+    leftThighAngleZ = 0;
+    
+    rightThighAngleX = 0;
+    rightThighAngleY = 0;
+    rightThighAngleZ = 0;
+
+    leftLegAngleZ = 0;
+    leftLegAngleY = 0;
+    leftLegAngleX = 0;
+    
+    rightLegAngleX = 0;
+    rightLegAngleY = 0;
+    rightLegAngleZ = 0;
+        
+    neckAngleX = 0;
+    neckAngleY = 0;
+    neckAngleZ = 0;
+
+    headAngleX = 0;
+    headAngleY = 0;
+    headAngleZ = 0;
 
 	makeModel();
 }
@@ -45,7 +71,9 @@ void model::drawModel() {
 		glScalef(0.5,0.5,0.5);
 
 		glTranslatef(0.8,0.65,0.0);
-		glRotatef(-rightShoulderAngle,0,0,1.0);
+		glRotatef(-rightShoulderAngleX,1.0,0,0.0);
+		glRotatef(-rightShoulderAngleY,0,1.0,0.0);
+		glRotatef(-rightShoulderAngleZ,0,0,1.0);
 
 		glPushMatrix(); 
 		{
@@ -54,7 +82,9 @@ void model::drawModel() {
 		glPopMatrix();
 
 		glTranslatef(0.9,0,0);
-		glRotatef(-rightElbowAngle,0, 0.0,1.0);
+		glRotatef(-rightElbowAngleX,1.0, 0.0,0.0);
+		glRotatef(-rightElbowAngleY,0.0, 1.0,0.0);
+		glRotatef(-rightElbowAngleZ,0, 0.0,1.0);
 		glCallList(2);
 	}
 	glPopMatrix();
@@ -66,7 +96,9 @@ void model::drawModel() {
 
 		glTranslatef(-0.8,0.65,0.0);
 		glRotatef(-180,0,0,1);
-		glRotatef(leftShoulderAngle,0,0,1.0);
+		glRotatef(leftShoulderAngleX,1.0,0,0.0);
+		glRotatef(leftShoulderAngleY,0,1.0,0.0);
+		glRotatef(leftShoulderAngleZ,0,0,1.0);
 
 		glPushMatrix(); 
 		{
@@ -75,7 +107,9 @@ void model::drawModel() {
 		glPopMatrix();
 
 		glTranslatef(0.9,0,0);
-		glRotatef(leftElbowAngle,0, 0.0,1.0);
+		glRotatef(leftElbowAngleX,1, 0.0,0.0);
+		glRotatef(leftElbowAngleY,0, 1.0,0.0);
+		glRotatef(leftElbowAngleZ,0, 0.0,1.0);
 		glCallList(2);
 	}
 	glPopMatrix();
@@ -87,7 +121,9 @@ void model::drawModel() {
 
 		glTranslatef(-0.4,-0.65,0.0);
 		glRotatef(90,0,0,1);
-		glRotatef(leftThighAngle,0.0,1.0,0.0);
+		glRotatef(leftThighAngleX,1.0,0.0,0.0);
+		glRotatef(leftThighAngleY,0.0,1.0,0.0);
+		glRotatef(leftThighAngleZ,0.0,0.0,1.0);
 
 		glPushMatrix(); 
 		{
@@ -96,7 +132,9 @@ void model::drawModel() {
 		glPopMatrix();
 
 		glTranslatef(-1,0,0);
-		glRotatef(leftLegAngle,0, 1.0,0.0);
+		glRotatef(leftLegAngleX,1.0,0.0,0.0);
+		glRotatef(leftLegAngleY,0, 1.0,0.0);
+		glRotatef(leftLegAngleZ,0, 0.0,1.0);
 		glCallList(5);
 	}
 	glPopMatrix();
@@ -109,7 +147,9 @@ void model::drawModel() {
 
 		glTranslatef(+0.4,-0.65,0.0);
 		glRotatef(90,0,0,1);
-		glRotatef(rightThighAngle,0.0,1.0,0.0);
+		glRotatef(rightThighAngleX,1.0,0.0,0.0);
+		glRotatef(rightThighAngleY,0.0,1.0,0.0);
+		glRotatef(rightThighAngleZ,0.0,0.0,1.0);
 
 		glPushMatrix(); 
 		{
@@ -118,7 +158,9 @@ void model::drawModel() {
 		glPopMatrix();
 
 		glTranslatef(-1,0,0);
-		glRotatef(rightLegAngle,0.0,1.0,0.0);
+		glRotatef(rightLegAngleX,1.0,0.0,0.0);
+		glRotatef(rightLegAngleY,0.0,1.0,0.0);
+		glRotatef(rightLegAngleZ,0.0,0.0,1.0);
 		glCallList(5);
 	}
 	glPopMatrix();
@@ -129,7 +171,9 @@ void model::drawModel() {
 	{
 		glTranslatef(0.0, 0.4, 0.0);
 		
-		glRotatef(neckAngle, 1.0, 0.0, 0.0);
+		glRotatef(neckAngleY, 0.0, 1.0, 0.0);
+		glRotatef(neckAngleZ, 0.0, 0.0, 1.0);
+		glRotatef(neckAngleX, 1.0, 0.0, 0.0);
 		
 		glPushMatrix();
 		{
@@ -138,7 +182,9 @@ void model::drawModel() {
 		glPopMatrix();
 		glTranslatef(0.0, 0.2, 0.0);
 		
-		glRotatef(headAngle, 0.0, 1.0, 0.0);
+		glRotatef(headAngleZ, 0.0, 0.0, 1.0);
+		glRotatef(headAngleX, 1.0, 0.0, 0.0);
+		glRotatef(headAngleY, 0.0, 1.0, 0.0);
 		
 		glCallList(7);
 		

@@ -2,19 +2,45 @@
 #include <iostream>
 using namespace std;	
 struct model{
-	float leftShoulderAngle;
-	float leftElbowAngle;
-	float rightShoulderAngle;
-	float rightElbowAngle;
+	float leftShoulderAngleX;
+	float leftShoulderAngleY;
+	float leftShoulderAngleZ;
+	
+	float leftElbowAngleX;
+	float leftElbowAngleY;
+	float leftElbowAngleZ;
+	
+	float rightShoulderAngleX;
+	float rightShoulderAngleY;
+	float rightShoulderAngleZ;
+	
+	float rightElbowAngleX;
+	float rightElbowAngleY;
+	float rightElbowAngleZ;
 
-	float leftThighAngle;
-	float rightThighAngle;
+	float leftThighAngleX;
+	float leftThighAngleY;
+	float leftThighAngleZ;
+	
+	float rightThighAngleX;
+	float rightThighAngleY;
+	float rightThighAngleZ;
 
-	float leftLegAngle;
-	float rightLegAngle;
+	float leftLegAngleX;
+	float leftLegAngleY;
+	float leftLegAngleZ;
 
-	float neckAngle;
-	float headAngle;
+	float rightLegAngleX;
+	float rightLegAngleY;
+	float rightLegAngleZ;
+
+	float neckAngleX;
+	float neckAngleY;
+	float neckAngleZ;
+	
+	float headAngleX;
+	float headAngleY;
+	float headAngleZ;
 	
 	model();
 	
