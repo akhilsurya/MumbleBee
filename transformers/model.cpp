@@ -167,6 +167,7 @@ void model::drawModel() {
 			glRotatef(90,1,0,0);	
 			glCallList(14);
 		}
+		glPopMatrix();
 		glTranslatef(1,0,0);
 		glRotatef(leftElbowAngleX,1, 0.0,0.0);
 		glRotatef(leftElbowAngleY,0, 1.0,0.0);
@@ -468,7 +469,7 @@ void model::makeFoot(){
 
 void model::makeWheel(){
 	glNewList(14,GL_COMPILE);
-		float segs=20;
+		float segs=15;
 		float step=(360/segs)*3.14/180;
 		float radius=0.4;
 		float x, y;
