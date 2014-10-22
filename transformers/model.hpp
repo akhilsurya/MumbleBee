@@ -42,6 +42,35 @@ struct model{
 	float headAngleY;
 	float headAngleZ;
 	
+	float bodyAngleX;
+	float bodyAngleY;
+	float bodyAngleZ;
+	
+	float leftWristAngleX;
+	float leftWristAngleY;
+	float leftWristAngleZ;
+
+	float rightWristAngleX;
+	float rightWristAngleY;
+	float rightWristAngleZ;
+
+	float leftFootAngleX;
+	float leftFootAngleY;
+	float leftFootAngleZ;
+
+	float rightFootAngleX;
+	float rightFootAngleY;
+	float rightFootAngleZ;
+	
+	float rightWingAngleX;
+	float rightWingAngleY;
+	float rightWingAngleZ;
+
+	float leftWingAngleX;
+	float leftWingAngleY;
+	float leftWingAngleZ;
+
+	
 	model();
 	
 	void makeModel();
@@ -59,6 +88,11 @@ struct model{
 	void makeHead();
 	
 	void makeCube();
+	void makeFoot();
+	void makeHand();
+	void makeLeftWing();
+	void makeRightWing();
 	
+		
 };
 
