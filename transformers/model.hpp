@@ -5,15 +5,15 @@ struct model{
 	float leftShoulderAngleX;
 	float leftShoulderAngleY;
 	float leftShoulderAngleZ;
-	
+
 	float leftElbowAngleX;
 	float leftElbowAngleY;
 	float leftElbowAngleZ;
-	
+
 	float rightShoulderAngleX;
 	float rightShoulderAngleY;
 	float rightShoulderAngleZ;
-	
+
 	float rightElbowAngleX;
 	float rightElbowAngleY;
 	float rightElbowAngleZ;
@@ -21,7 +21,7 @@ struct model{
 	float leftThighAngleX;
 	float leftThighAngleY;
 	float leftThighAngleZ;
-	
+
 	float rightThighAngleX;
 	float rightThighAngleY;
 	float rightThighAngleZ;
@@ -37,15 +37,15 @@ struct model{
 	float neckAngleX;
 	float neckAngleY;
 	float neckAngleZ;
-	
+
 	float headAngleX;
 	float headAngleY;
 	float headAngleZ;
-	
+
 	float bodyAngleX;
 	float bodyAngleY;
 	float bodyAngleZ;
-	
+
 	float leftWristAngleX;
 	float leftWristAngleY;
 	float leftWristAngleZ;
@@ -61,7 +61,7 @@ struct model{
 	float rightFootAngleX;
 	float rightFootAngleY;
 	float rightFootAngleZ;
-	
+
 	float rightWingAngleX;
 	float rightWingAngleY;
 	float rightWingAngleZ;
@@ -70,15 +70,19 @@ struct model{
 	float leftWingAngleY;
 	float leftWingAngleZ;
 
+	int mode;
+	void toCar();
+	void toHumanoid();	
 	
+	float headPosY;
 	model();
-	
+
 	void makeModel();
-	
+
 	void drawModel();
-	
+
 	private :
-	
+
 	void makeUpperArm();
 	void makeLowerArm();
 	void makeTorso();
@@ -86,7 +90,6 @@ struct model{
 	void makeLeg();
 	void makeNeck();
 	void makeHead();
-	
 	void makeCube();
 	void makeFoot();
 	void makeHand();
@@ -95,6 +98,8 @@ struct model{
 
 	void makeWheel();
 	
-		
+	int iter;
+	int totalIter;
+	
 };
 

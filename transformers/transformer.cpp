@@ -5,7 +5,7 @@ void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glScalef(0.5,0.5,0.5);
-//	glRotatef(40,-0.5,0.0,0.1);
+	//	glRotatef(40,-0.5,0.0,0.1);
 	model1.makeModel();	
 	model1.drawModel();
 }
@@ -50,19 +50,19 @@ int main(int argc, char *argv[]){
 	csX75::framebuffer_size_callback(window, win_width, win_height);
 	//Initialize GL state
 	csX75::initGL();
- 
+
 	// Loop until the user closes the window
 	// Run the state is set to close window by clicking in close or through keyboard like Alt+F4 
 	while (glfwWindowShouldClose(window) == 0)
 	{
-	  // Render here
-	  renderGL();
+		// Render here
+		renderGL();
 
-	  // Swap front and back buffers
-	  glfwSwapBuffers(window);
-	  
-	  // Poll for and process events
-	  glfwPollEvents();
+		// Swap front and back buffers
+		glfwSwapBuffers(window);
+
+		// Poll for and process events
+		glfwPollEvents();
 	}
 
 	glfwDestroyWindow(window);
@@ -73,4 +73,4 @@ int main(int argc, char *argv[]){
 
 
 
-	
+
