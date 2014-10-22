@@ -1,5 +1,5 @@
 #include "model.hpp"
-
+#include <math.h>
 model::model(){
 	leftShoulderAngleX=0;
 	leftShoulderAngleY=0;
@@ -71,6 +71,8 @@ model::model(){
 		makeModel();
 }
 
+
+
 void model::makeModel() {
 	makeCube();
 	makeUpperArm();
@@ -86,6 +88,7 @@ void model::makeModel() {
 
 	makeLeftWing();
 	makeRightWing();
+	makeWheel();
 }
 
 
@@ -117,7 +120,13 @@ void model::drawModel() {
 			glCallList(1);
 		}
 		glPopMatrix();
-
+		glPushMatrix();
+		{
+			glTranslatef(0.3,0,-0.25);
+			glRotatef(90,1,0,0);	
+			glCallList(14);
+		}
+		glPopMatrix();
 		glTranslatef(1,0,0);
 		glRotatef(-rightElbowAngleX,1.0, 0.0,0.0);
 		glRotatef(-rightElbowAngleY,0.0, 1.0,0.0);
@@ -152,7 +161,12 @@ void model::drawModel() {
 			glCallList(1);
 		}
 		glPopMatrix();
-
+		glPushMatrix();
+		{
+			glTranslatef(0.3,0,-0.25);
+			glRotatef(90,1,0,0);	
+			glCallList(14);
+		}
 		glTranslatef(1,0,0);
 		glRotatef(leftElbowAngleX,1, 0.0,0.0);
 		glRotatef(leftElbowAngleY,0, 1.0,0.0);
@@ -196,6 +210,14 @@ void model::drawModel() {
 			glCallList(5);
 		}
 		glPopMatrix();
+		
+		glPushMatrix();
+		{
+			glTranslatef(-0.3,-0.5,-0.25);
+			glRotatef(90,0,1,0);	
+			glCallList(14);
+		}
+		glPopMatrix();
 		glTranslatef(0,-1,0);
 		glRotatef(leftFootAngleX,1.0,0.0,0.0);
 		glRotatef(leftFootAngleY,0, 1.0,0.0);
@@ -231,6 +253,15 @@ void model::drawModel() {
 			glCallList(5);
 		}
 		glPopMatrix();
+		
+		glPushMatrix();
+		{
+			glTranslatef(0.3,-0.5,-0.25);
+			glRotatef(90,0,1,0);	
+			glCallList(14);
+		}
+		glPopMatrix();
+
 		glTranslatef(0,-1,0);
 		glRotatef(rightFootAngleX,1.0,0.0,0.0);
 		glRotatef(rightFootAngleY,0, 1.0,0.0);
@@ -381,7 +412,7 @@ void model::makeTorso() {
 
 void model::makeLeg() {
 	glNewList(5, GL_COMPILE);
-		glScalef(0.4,0.5,0.2);
+		glScalef(0.4,0.5,0.3);
 		glTranslatef(0,-1,0);
 		glCallList(9);
 	glEndList();
@@ -432,6 +463,51 @@ void model::makeFoot(){
 		glScalef(0.2,0.1,0.35);
 		glCallList(9);
 	glEndList();
+}
+
+
+void model::makeWheel(){
+	glNewList(14,GL_COMPILE);
+		float segs=20;
+		float step=(360/segs)*3.14/180;
+		float radius=0.4;
+		float x, y;
+		float thickness=0.3;
+		glTranslatef(0,0,-thickness/2);
+	glBegin(GL_TRIANGLE_FAN);
+		
+		glVertex3f(0,0,0);
+		for(int i=0;i<segs;++i){
+			x=sinf(step*i)*radius;
+			y=cosf(step*i)*radius;
+			glVertex3f(x,y,0);
+		}
+		glVertex3f(0,radius,0);
+	glEnd();
+	
+	glTranslatef(0,0,thickness);
+	glBegin(GL_TRIANGLE_FAN);
+		glVertex3f(0,0,0);
+		for(int i=0;i<segs;++i){
+			x=sinf(step*i)*radius;
+			y=cosf(step*i)*radius;
+			glVertex3f(x,y,0);
+		}
+		glVertex3f(0,radius,0);
+	glEnd();
+	glTranslatef(0,0,-thickness);
+	glBegin(GL_QUAD_STRIP);
+		for(int i=0;i<segs;++i){
+			x=sinf(step*i)*radius;
+			y=cosf(step*i)*radius;
+			glVertex3f(x,y,0);
+			glVertex3f(x,y,thickness);
+		}
+		glVertex3f(0,radius,0);
+		glVertex3f(0,radius,thickness);
+	glEnd();
+	glEndList();
+
 }
 void model::makeCube() {
 	glNewList(9, GL_COMPILE);

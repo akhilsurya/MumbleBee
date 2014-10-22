@@ -92,6 +92,8 @@ struct model{
 	void makeHand();
 	void makeLeftWing();
 	void makeRightWing();
+
+	void makeWheel();
 	
 		
 };

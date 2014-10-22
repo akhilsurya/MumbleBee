@@ -5,7 +5,7 @@ void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 	glLoadIdentity();
 	glScalef(0.5,0.5,0.5);
-	glRotatef(40,-0.5,0.0,0.1);
+//	glRotatef(40,-0.5,0.0,0.1);
 	model1.makeModel();	
 	model1.drawModel();
 }
