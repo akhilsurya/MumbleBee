@@ -3,11 +3,14 @@
 
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
+	glPushMatrix();
+//glTranslatef(0,0,1);
 	glScalef(0.5,0.5,0.5);
 	//	glRotatef(40,-0.5,0.0,0.1);
+	
 	model1.makeModel();	
 	model1.drawModel();
+	glPopMatrix();
 }
 
 int main(int argc, char *argv[]){

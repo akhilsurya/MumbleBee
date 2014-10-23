@@ -51,7 +51,7 @@ namespace csX75
 	{
 		if  ( height == 0 ) height = 1;
 
-		glMatrixMode( GL_MODELVIEW);
+		glMatrixMode( GL_PROJECTION);
 		glLoadIdentity();
 		glEnable(GL_DEPTH_TEST);
 		//Draw to the whole window
@@ -63,7 +63,7 @@ namespace csX75
 		double aspect;
 		if (width > height) {
 			aspect = (double)width/(double)height;
-			glFrustum(-aspect, aspect, -1.0, 1.0, -1.0, 1.0);
+			glFrustum(-aspect, aspect, -1.0, 1.0, -1.0, 1.0); 
 		}
 		else {
 			aspect = (double)height/(double)width;
@@ -72,6 +72,7 @@ namespace csX75
 
 		win_width = width;
 		win_height = height;
+		  glMatrixMode(GL_MODELVIEW);
 	}
 
 	//!GLFW keyboard callback
