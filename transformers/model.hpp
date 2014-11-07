@@ -88,6 +88,7 @@ struct model{
 	int skyTex;
 	int groundTex;
 	int logoTex;
+	int faceTex;
 	void makeModel();
 
 	void drawModel();

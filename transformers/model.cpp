@@ -125,8 +125,13 @@ void model::drawModel() {
 		
 	}
 	else if(camera==2&&mode==1){
-		glTranslatef(-1,-2,-5);
+		glTranslatef(-1,-1.5,-3.5);
 		glRotatef(180-bodyAngleZ, 0,1,0);
+		glTranslatef(-bodyPosX,0, -bodyPosZ);
+	}
+	else if(camera==2&&mode==0){
+		glTranslatef(-0.5,-1.5,-3);
+		glRotatef(180-bodyAngleY, 0,1,0);
 		glTranslatef(-bodyPosX,0, -bodyPosZ);
 	}
 	else{
@@ -143,7 +148,7 @@ void model::drawModel() {
 	float groundHalfWidth=50;
 	float groundSegs=100;
 	float groundStep=groundHalfWidth*2/groundSegs;
-				glBindTexture (GL_TEXTURE_2D,groundTex);
+	glBindTexture (GL_TEXTURE_2D,groundTex);
 	for(float x=-groundHalfWidth;x<groundHalfWidth;x+=groundStep){
 		for(float z=-groundHalfWidth;z<groundHalfWidth;z+=groundStep){
 
@@ -568,7 +573,71 @@ glColor3f(0,0,0);
 void model::makeHead() {
 	glNewList(7, GL_COMPILE);
 	glScalef(0.12,0.12,0.12);
-	glCallList(9);
+
+	glBegin(GL_POLYGON);  
+	glNormal3f( 0.0f, 1.0f, 0.0f);
+	glVertex3f( 1.0f, 1.0f, -1.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f,  1.0f);
+	glVertex3f(-1.0f, 1.0f,  -1.0f);
+	glEnd();
+
+	// Front face  (z = 1.0f)
+	
+	glBegin(GL_POLYGON); 
+	glNormal3f(0,0,1);
+	//glColor3f(0,0,0);
+	glVertex3f( 1.0f,  1.0f, 1.0f);
+	glVertex3f(1.0f,  -1.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f, 1.0f);
+	glEnd();
+
+	//Bottom face (y=-1.0f)
+	glBegin(GL_POLYGON); 
+	glNormal3f(0,-1,0);
+	glVertex3f( 1.0f, -1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f,  -1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glVertex3f( -1.0f, -1.0f, 1.0f);
+	glEnd(); 
+
+
+
+	// Back face (z = -1.0f)
+	//glBindTexture(GL_TEXTURE_2D, 4);
+	glBegin(GL_POLYGON); 
+	glColor3f(1,1,1);
+	glNormal3f(0,0,-1);
+	//glTexCoord2f(0,0);
+	glVertex3f( 1.0f, -1.0f, -1.0f);
+	//glTexCoord2f(1,0);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	//glTexCoord2f(1,1);
+	glVertex3f(-1.0f,  1.0f, -1.0f);
+	//glTexCoord2f(0,1);
+	glVertex3f( 1.0f,  1.0f, -1.0f);
+	glEnd(); 
+
+glBindTexture(GL_TEXTURE_2D, 0);
+	// Left face (x = -1.0f)
+	glBegin(GL_POLYGON);
+	glNormal3f(-1,0,0);
+	glVertex3f(-1.0f,  1.0f,  1.0f);
+	glVertex3f(-1.0f,  1.0f, -1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glVertex3f(-1.0f, -1.0f,  1.0f);
+	glEnd(); 
+
+	// Right face (x = 1.0f)
+	glBegin(GL_POLYGON); 
+	glNormal3f(1,0,0);
+	glVertex3f(1.0f,  1.0f, -1.0f);
+	glVertex3f(1.0f,  1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+
+	glEnd();
 	glEndList();
 }
 

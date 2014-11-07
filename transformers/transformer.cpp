@@ -55,6 +55,7 @@ csX75::initGL();
 	model1.groundTex = csX75::loadBMP("./ground.bmp");
 	model1.skyTex= csX75::loadBMP("./sky.bmp");
 	model1.logoTex=csX75::loadBMP("./decept.bmp");
+	model1.faceTex=csX75::loadBMP("./face.bmp");
 	// Loop until the user closes the window
 	// Run the state is set to close window by clicking in close or through keyboard like Alt+F4 
 	while (glfwWindowShouldClose(window) == 0)
