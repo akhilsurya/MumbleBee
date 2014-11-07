@@ -900,8 +900,12 @@ void model::makeCube() {
 	glEndList();
 }
 
+
+
+
 void model::toCar(){
 	if(iter<40){
+
 		headPosY-=0.01;
 		iter++;
 	}
@@ -1003,3 +1007,4 @@ void model::toHumanoid(){
 		iter=0;
 	}
 }
+

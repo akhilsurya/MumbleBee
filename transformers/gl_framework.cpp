@@ -270,7 +270,9 @@ namespace csX75
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 			if(model1.mode==0){
 				while(model1.mode==0){
+					
 					model1.toCar();
+					checkAndDump(window);
 					renderGL();
 					glfwSwapBuffers(window);
 					usleep(20000);
@@ -281,8 +283,9 @@ namespace csX75
 				glDisable(GL_LIGHT2);
 				glDisable(GL_LIGHT3);
 				while(model1.mode==1){
-
+					
 					model1.toHumanoid();
+					checkAndDump(window);
 					renderGL();
 					glfwSwapBuffers(window);
 					usleep(20000);
@@ -319,15 +322,107 @@ namespace csX75
 			if(model1.headLight) {
 				glDisable(GL_LIGHT2);glDisable(GL_LIGHT3);
 				model1.headLight=false;
-			}
-			else {
+			} else {
 				glEnable(GL_LIGHT2);glEnable(GL_LIGHT3);
 				model1.headLight=true;
 			}
 		}
-
+		if (key==GLFW_KEY_F1 && action==GLFW_PRESS) {
+			dumpData();
+		}
+			
 	}
-};  
+} 
 
+void csX75::checkAndDump(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_F1) == GLFW_PRESS) {
+		csX75::dumpData();
+	}
+}
+void csX75::dumpData() {
+	ofstream dump_file;
+			dump_file.open("dump_file.txt", ios::out | ios::app);
+			if (dump_file.is_open()) {
+				dump_file<<model1.leftShoulderAngleX<<" ";
+				dump_file<<model1.leftShoulderAngleY<<" ";
+				dump_file<<model1.leftShoulderAngleZ<<" ";
 
+				dump_file<<model1.leftElbowAngleX<<" ";
+				dump_file<<model1.leftElbowAngleY<<" ";
+				dump_file<<model1.leftElbowAngleZ<<" ";
 
+				dump_file<<model1.rightShoulderAngleX<<" ";
+				dump_file<<model1.rightShoulderAngleY<<" ";
+				dump_file<<model1.rightShoulderAngleZ<<" ";
+
+				dump_file<<model1.rightElbowAngleX<<" ";
+				dump_file<<model1.rightElbowAngleY<<" ";
+				dump_file<<model1.rightElbowAngleZ<<" ";
+
+				dump_file<<model1.leftThighAngleX<<" ";
+				dump_file<<model1.leftThighAngleY<<" ";
+				dump_file<<model1.leftThighAngleZ<<" ";
+
+				dump_file<<model1.rightThighAngleX<<" ";
+				dump_file<<model1.rightThighAngleY<<" ";
+				dump_file<<model1.rightThighAngleZ<<" ";
+
+				dump_file<<model1.rightLegAngleX<<" ";
+				dump_file<<model1.rightLegAngleY<<" ";
+				dump_file<<model1.rightLegAngleZ<<" ";
+
+				dump_file<<model1.leftLegAngleX<<" ";
+				dump_file<<model1.leftLegAngleY<<" ";
+				dump_file<<model1.leftLegAngleZ<<" ";
+
+				dump_file<<model1.neckAngleX<<" ";
+				dump_file<<model1.neckAngleY<<" ";
+				dump_file<<model1.neckAngleZ<<" ";
+
+				dump_file<<model1.headAngleX<<" ";
+				dump_file<<model1.headAngleY<<" ";
+				dump_file<<model1.headAngleZ<<" ";
+
+				dump_file<<model1.bodyAngleX<<" ";
+				dump_file<<model1.bodyAngleY<<" ";
+				dump_file<<model1.bodyAngleZ<<" ";
+
+				dump_file<<model1.leftWristAngleX<<" ";
+				dump_file<<model1.leftWristAngleY<<" ";
+				dump_file<<model1.leftWristAngleZ<<" ";
+
+				dump_file<<model1.rightWristAngleX<<" ";
+				dump_file<<model1.rightWristAngleY<<" ";
+				dump_file<<model1.rightWristAngleZ<<" ";
+
+				dump_file<<model1.leftFootAngleX<<" ";
+				dump_file<<model1.leftFootAngleY<<" ";
+				dump_file<<model1.leftFootAngleZ<<" ";
+
+				dump_file<<model1.rightFootAngleX<<" ";
+				dump_file<<model1.rightFootAngleY<<" ";
+				dump_file<<model1.rightFootAngleZ<<" ";
+
+				dump_file<<model1.rightWingAngleX<<" ";
+				dump_file<<model1.rightWingAngleY<<" ";
+				dump_file<<model1.rightWingAngleZ<<" ";
+
+				dump_file<<model1.leftWingAngleX<<" ";
+				dump_file<<model1.leftWingAngleY<<" ";
+				dump_file<<model1.leftWingAngleZ<<" ";
+
+				dump_file<<model1.bodyPosX<<" ";
+				dump_file<<model1.bodyPosY<<" ";
+				dump_file<<model1.bodyPosZ<<" ";
+
+				dump_file<<model1.mode<<" ";
+
+				dump_file<<model1.camera<<" ";
+
+				dump_file<<std::endl;
+
+			} else {
+				std::cout <<"Could not open file ...\n"<<std::endl;
+			}					
+			dump_file.close();	
+}		

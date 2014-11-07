@@ -12,3 +12,4 @@ http://opengl.czweb.org/ch09/293-296.html
 
 Keys :
 Press Shift, Ctrl, Alt along with E, C, R, T, B, Y, N, U, I, ',', Q to move various parts of the bot. Use space bar to transform the bot. Use X, . to toggle head lights. Use W, E to toggle global lights. Use W to switch camera modes. And Esc to close window
+Press F11 to take a dump of current frame.
