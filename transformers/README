@@ -1,4 +1,14 @@
-TODO !
+Instructions :
+Run 'make' inside the project directory, for making the executable named 'transformer'
 
-
+References :
 Used the official documentation (www,glfw.org) of GLFW for reference for GLFW
+http://stackoverflow.com/questions/15242507/perspective-correct-texturing-of-trapezoid-in-opengl-es-2-0
+http://pages.cs.wisc.edu/~lizhang/courses/cs559-2010s/syllabus/03-15-hopman/lighting-texture.pdf
+Code for reading bytes from a bmp file 
+http://www.opengl-tutorial.org/beginners-tutorials/tutorial-5-a-textured-cube/
+http://opengl.czweb.org/ch09/293-296.html
+
+
+Keys :
+Press Shift, Ctrl, Alt along with E, C, R, T, B, Y, N, U, I, ',', Q to move various parts of the bot. Use space bar to transform the bot. Use X, . to toggle head lights. Use W, E to toggle global lights. Use W to switch camera modes. And Esc to close window

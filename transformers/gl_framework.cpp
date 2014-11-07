@@ -24,11 +24,58 @@
 model model1;
 
 void renderGL(void);
-
+bool light0= true;
+bool light1= true;
+bool headlight1=true;
+bool headlight2 = true;
+int cameraNumber = 0;
 namespace csX75
 {
 	int win_width;
 	int win_height;
+
+	GLuint loadBMP(const char * imagePath){
+		unsigned char header[54];
+		unsigned int dataPos;
+		unsigned int width, height, imageSize;
+		unsigned char* data;
+
+		FILE* file = fopen(imagePath, "rb");
+		if(!file){
+			std::cout << "cannot load file";
+			return 0;
+		}
+		if(fread(header, 1, 54, file) != 54){
+			std::cout << "not a bmp :(";
+			return 0;
+		}
+		if(header[0] != 'B' || header[1] != 'M'){
+			std::cout << "not a bmp :(";
+			return 0;
+		}
+		dataPos    = *(int*)&(header[0x0A]);
+		imageSize  = *(int*)&(header[0x22]); 
+		width      = *(int*)&(header[0x12]);
+		height     = *(int*)&(header[0x16]);
+		if(!imageSize) imageSize = width * height * 3;
+		if(!dataPos) dataPos = 54;
+		data = new unsigned char [imageSize+dataPos];
+		fread(data, 1, 3*width*height+dataPos, file);
+		fclose(file); 
+		unsigned char* dataWithOutHeader ;
+		dataWithOutHeader = new unsigned char [imageSize]; 
+		for(int i= 0; i<3*width*height; i++) {
+			dataWithOutHeader[i]=data[i+dataPos]; 
+		}
+		GLuint textureID;
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_BGR, GL_UNSIGNED_BYTE, dataWithOutHeader);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		return textureID;
+	}
 
 
 	//! Initialize GL State
@@ -50,29 +97,53 @@ namespace csX75
 	void framebuffer_size_callback(GLFWwindow* window, int width, int height)
 	{
 		if  ( height == 0 ) height = 1;
+		glViewport( 0, 0, width, height );
+
+		//glShadeModel(GL_FLAT);
+		glColorMaterial(GL_FRONT_AND_BACK,GL_DIFFUSE); 
+		glEnable(GL_COLOR_MATERIAL);
+		glEnable(GL_LIGHTING);
+		glEnable(GL_LIGHT0);
+		glEnable(GL_LIGHT1);
+		//glEnable(GL_LIGHT2);
+		//glEnable(GL_LIGHT3);	
+		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_DEPTH_TEST);
+		glEnable(GL_NORMALIZE);
+		GLfloat ambientColor[] = {0.4f, 0.4f, 0.4f, 1.0f};
+		glLightModelfv(GL_LIGHT_MODEL_AMBIENT, ambientColor);	
+		GLfloat lightColor0[] = {1.0f, 1.0f, 1.0f, 1.0f};
+
+		glLightfv(GL_LIGHT0, GL_DIFFUSE, lightColor0);
+		//glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+
+		GLfloat lightColor1[] = {1.0f ,1.0f , 1.0f,1.0};
+		
+
+		glLightfv(GL_LIGHT1, GL_DIFFUSE, lightColor0);
+		//glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
 
 		glMatrixMode( GL_PROJECTION);
 		glLoadIdentity();
-		glEnable(GL_DEPTH_TEST);
+		//	glShadeModel(GL_SMOOTH);
 		//Draw to the whole window
-		glViewport( 0, 0, width, height );
+
+		//	glViewport( 0, 0, width, height );
 
 		//Keep the aspect ratio fixed
 		// Changes to draw 3D
 
 		double aspect;
-		if (width > height) {
-			aspect = (double)width/(double)height;
-			glFrustum(-aspect, aspect, -1.0, 1.0, -1.0, 1.0); 
-		}
-		else {
-			aspect = (double)height/(double)width;
-			glFrustum(-1.0, 1.0, -aspect, aspect, -1.0, 1.0);
-		}
+		aspect = (double)height/(double)width;
+		glFrustum(-1.0, 1.0, -aspect, aspect,1,100);
 
+		//glFrustum(-0.5,0.5,-0.5,0.5,0.5,1);
 		win_width = width;
 		win_height = height;
-		  glMatrixMode(GL_MODELVIEW);
+		glMatrixMode(GL_MODELVIEW);
+
+		model1.makeModel();	
+		glLoadIdentity();
 	}
 
 	//!GLFW keyboard callback
@@ -177,6 +248,25 @@ namespace csX75
 
 		}
 
+
+		if(key==GLFW_KEY_DOWN && (action== GLFW_PRESS|GLFW_REPEAT) &&model1.mode==1){
+			if(glfwGetKey(window, GLFW_KEY_RIGHT)==GLFW_PRESS) model1.bodyAngleZ+=3;				
+			else if(glfwGetKey(window, GLFW_KEY_LEFT)==GLFW_PRESS) model1.bodyAngleZ-=3;
+							
+			model1.bodyPosZ-=0.2*cos(3.14*model1.bodyAngleZ/180.0);
+			model1.bodyPosX-=0.2*sin(3.14*model1.bodyAngleZ/180.0);
+		}
+		if(key==GLFW_KEY_UP && (action== GLFW_PRESS|GLFW_REPEAT) &&model1.mode==1){
+			if (glfwGetKey(window, GLFW_KEY_RIGHT)==GLFW_PRESS) model1.bodyAngleZ-=3;				
+			else if(glfwGetKey(window, GLFW_KEY_LEFT)==GLFW_PRESS) model1.bodyAngleZ+=3;
+							
+			model1.bodyPosZ+=0.2*cos(3.14*model1.bodyAngleZ/180.0);
+			model1.bodyPosX+=0.2*sin(3.14*model1.bodyAngleZ/180.0);
+		//	std::cout<<model1.bodyAngleZ<<std::endl;
+		}
+
+
+
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 			if(model1.mode==0){
 				while(model1.mode==0){
@@ -187,7 +277,11 @@ namespace csX75
 				}
 			}
 			else{
+				model1.headLight=false;
+				glDisable(GL_LIGHT2);
+				glDisable(GL_LIGHT3);
 				while(model1.mode==1){
+
 					model1.toHumanoid();
 					renderGL();
 					glfwSwapBuffers(window);
@@ -195,6 +289,43 @@ namespace csX75
 				}
 			}
 		}
+
+		if (key==GLFW_KEY_W && action== GLFW_PRESS) {
+			if (light0) {
+				glDisable(GL_LIGHT0);
+				light0= false;
+			} else {
+				glEnable(GL_LIGHT0);
+				light0= true;
+			}
+		}
+
+		if (key==GLFW_KEY_E && action== GLFW_PRESS) {
+			if (light1) {
+				glDisable(GL_LIGHT1);
+				light1= false;
+			} else {
+				glEnable(GL_LIGHT1);
+				light1= true;
+			}
+		}
+
+
+		if (key==GLFW_KEY_Z && action== GLFW_PRESS) {
+			model1.camera = (model1.camera+1)%3;
+		}
+
+		if(key==GLFW_KEY_X&&action==GLFW_PRESS&&model1.mode==1){
+			if(model1.headLight) {
+				glDisable(GL_LIGHT2);glDisable(GL_LIGHT3);
+				model1.headLight=false;
+			}
+			else {
+				glEnable(GL_LIGHT2);glEnable(GL_LIGHT3);
+				model1.headLight=true;
+			}
+		}
+
 	}
 };  
 

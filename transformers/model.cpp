@@ -1,5 +1,19 @@
 #include "model.hpp"
-#include <math.h>
+
+
+vector<float> normal(float x1, float y1,float z1,float x2,float y2,float z2, float x3,float y3,float z3){
+	float a1=x2-x1;
+	float b1=y2-y1;
+	float c1=z2-z1;
+	float a2=x3-x2;
+	float b2=y3-y2;
+	float c2=z3-z2;
+	vector<float> normal;
+	normal.push_back(b1*c2-c1*b2);
+	normal.push_back(c1*a2-a1*c2);
+	normal.push_back(a1*b2 - b1*a2);
+	return normal;
+}
 model::model(){
 	leftShoulderAngleX=0;
 	leftShoulderAngleY=0;
@@ -42,7 +56,7 @@ model::model(){
 	headAngleZ = 0;
 	bodyAngleX=-90;
 	bodyAngleY=0;
-	bodyAngleZ=150;
+	bodyAngleZ=0;
 
 	leftWristAngleZ = 0;
 	leftWristAngleY = 0;
@@ -67,12 +81,18 @@ model::model(){
 	leftWingAngleZ = 0;
 	leftWingAngleY = 0;
 	leftWingAngleX = 0;
-	
+	carPosZ=0;
+	carPosX=0;
+	carTurn=0;
+	bodyPosX=0;
+	bodyPosY=-0.6;
+	bodyPosZ=-5;
 	headPosY=0;
 	mode=1;
 	iter=0;
 	totalIter=50;
-	makeModel();
+	camera=0;
+	//	makeModel();
 }
 
 
@@ -97,10 +117,100 @@ void model::makeModel() {
 
 
 void model::drawModel() {
+
+
+	if(camera==1&&mode==1){
+		glRotatef(180-bodyAngleZ, 0,1,0);
+		glTranslatef(-bodyPosX,0, -bodyPosZ);
+		
+	}
+	else if(camera==2&&mode==1){
+		glTranslatef(-1,-2,-5);
+		glRotatef(180-bodyAngleZ, 0,1,0);
+		glTranslatef(-bodyPosX,0, -bodyPosZ);
+	}
+	else{
+		glTranslatef(1,-2,-0.5);
+		glRotatef(10,0,0.8,0);
+	}
+	GLfloat lightPos1[] = { 1.0f, 1.0f,1.0f, 0.0f};
+			GLfloat lightPos0[] = {1.0f, -1.0f, 1.0f, 0.0f};
+	glLightfv(GL_LIGHT1, GL_POSITION, lightPos1);
+	glLightfv(GL_LIGHT0, GL_POSITION, lightPos0);
+	//	glTexEnvf (GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_DECAL);
+	//	glRotatef(45,1.0,0,0);
+	glColor3f(1,1,1);
+	float groundHalfWidth=50;
+	float groundSegs=100;
+	float groundStep=groundHalfWidth*2/groundSegs;
+				glBindTexture (GL_TEXTURE_2D,groundTex);
+	for(float x=-groundHalfWidth;x<groundHalfWidth;x+=groundStep){
+		for(float z=-groundHalfWidth;z<groundHalfWidth;z+=groundStep){
+
+			glBegin (GL_QUADS);
+	glNormal3f(0,1,0);
+	glTexCoord2f (0.0, 0.0);
+
+	glVertex3f (x, -1.0, z+groundStep);
+	glTexCoord2f (0.9, 0.0);
+	glVertex3f (x, -1.0, z);
+	glTexCoord2f (0.9, 1.0);
+	glVertex3f (x+groundStep, -1.0, z);
+	glTexCoord2f (0.0, 1.0);
+	glVertex3f (x+groundStep, -1.0, z+groundStep);
+	glEnd ();
+		}
+	}
+	
+
+
+int R=40;
+float segs=360;
+float texStep=0.9/segs;
+float step=(360.0/segs)*3.14/180;
+glBindTexture(GL_TEXTURE_2D,skyTex);
+glColor3f(0,0,0);
+float x, z;
+float lastx=0;float lastz=R;
+float skyEm[]={0.5,0.5,0.5};
+glPushAttrib(GL_LIGHTING_BIT);
+glMaterialfv(GL_FRONT, GL_EMISSION,skyEm);
+for(int i=1;i<362;i++){
+		x=sinf(step*i)*R;
+		z=cosf(step*i)*R;
+		glBegin(GL_QUADS);
+		glNormal3f(-lastx,0,-lastz);
+		glTexCoord2f(texStep*(i-1),0);
+		glVertex3f(lastx, -1, lastz);
+		glNormal3f(-lastx,0,-lastz);
+		glTexCoord2f(texStep*(i-1),1);
+		glVertex3f(lastx, 100, lastz);
+
+		glNormal3f(-x,0,-z);
+		glTexCoord2f(texStep*i,1);		
+		glVertex3f(x, 100, z);
+		glNormal3f(-x,0,-z);
+		glTexCoord2f(texStep*i,0);
+		glVertex3f(x,-1,z);
+		glEnd();
+		lastx=x;lastz=z;
+}
+
+glPopAttrib();
+
+	//glTranslatef(-0.25, -0.25, 0);
+	//glTranslatef(0.25,0.25,0);
+	//	glTranslatef(carPosX,0,carPosZ);
+	//	glRotatef(carTurn,0.0,1.0,0.0);
+	glBindTexture(GL_TEXTURE_2D,0);
+	//glPushAttrib(GL_LIGHTING_BIT);
+	glTranslatef(bodyPosX,bodyPosY,bodyPosZ);
 	/* The torso */
 	glRotatef(bodyAngleX, 1.0,0,0);
 	glRotatef(bodyAngleY, 0.0,1.0,0.0);
 	glRotatef(bodyAngleZ, 0.0,0.0,1.0);
+
+
 	glPushMatrix();
 	{
 		glScalef(1.5,1.5,1.5);
@@ -141,7 +251,7 @@ void model::drawModel() {
 		}
 		glPopMatrix();
 		glTranslatef(1,0,0);
-		glScalef(2,2,2);
+		glScalef(2,1,1);
 		glRotatef(-rightWristAngleX,1.0, 0.0,0.0);
 		glRotatef(-rightWristAngleY,0.0, 1.0,0.0);
 		glRotatef(-rightWristAngleZ,0, 0.0,1.0);
@@ -182,7 +292,7 @@ void model::drawModel() {
 		}
 		glPopMatrix();
 		glTranslatef(1,0.0,0.0);
-		glScalef(2,2,2);
+		glScalef(2,1,1);
 		glRotatef(leftWristAngleX,1, 0.0,0.0);
 		glRotatef(leftWristAngleY,0, 1.0,0.0);
 		glRotatef(leftWristAngleZ,0, 0.0,1.0);
@@ -227,8 +337,28 @@ void model::drawModel() {
 		glRotatef(leftFootAngleX,1.0,0.0,0.0);
 		glRotatef(leftFootAngleY,0, 1.0,0.0);
 		glRotatef(leftFootAngleZ,0, 0.0,1.0);
+		glPushMatrix();glPushAttrib(GL_LIGHTING_BIT);
+		{
+			if(headLight) {
+				float headLightColor[]={0.8,0.6,0};
+				glMaterialfv(GL_FRONT, GL_EMISSION,headLightColor);
+			}
+			else glColor3f(0.8,0.8,0.8);
+			glCallList(11);
+		}
+		glPopAttrib(); glPopMatrix();
+		glTranslatef(0,1,0);
+		float params[16];
+GLfloat  lightPos2[]={0,0,0,1};
 
-		glCallList(11);
+
+		GLfloat  diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f};
+		GLfloat spotDir[]={0,-1,-0.05};
+		glLightfv(GL_LIGHT3,GL_DIFFUSE,diffuse);
+		glLightfv(GL_LIGHT3,GL_SPOT_DIRECTION,spotDir);
+		glLightfv(GL_LIGHT3, GL_POSITION, lightPos2);
+		glLightf(GL_LIGHT3,GL_SPOT_CUTOFF,60.0f);
+		glLightf(GL_LIGHT3,GL_SPOT_EXPONENT,10.0f);
 	}
 	glPopMatrix();
 
@@ -239,6 +369,7 @@ void model::drawModel() {
 		glTranslatef(0.17,-0.3,0.0);
 		glScalef(0.5,0.5,0.5);
 
+	glColor3f(0.5,0.5,0.0);
 		glRotatef(rightThighAngleX,1.0,0.0,0.0);
 		glRotatef(rightThighAngleY,0.0,1.0,0.0);
 		glRotatef(rightThighAngleZ,0.0,0.0,1.0);
@@ -271,12 +402,30 @@ void model::drawModel() {
 		glRotatef(rightFootAngleX,1.0,0.0,0.0);
 		glRotatef(rightFootAngleY,0, 1.0,0.0);
 		glRotatef(rightFootAngleZ,0, 0.0,1.0);
-		glCallList(11);
-	}
-	glPopMatrix();
+		glPushMatrix();glPushAttrib(GL_LIGHTING_BIT);
+		{
+			if(headLight) {float headLightColor[]={0.8,0.6,0};glMaterialfv(GL_FRONT, GL_EMISSION,headLightColor);}
+			else glColor3f(0.8,0.8,0.8);
+			glCallList(11);
+		}
+		glPopAttrib(); glPopMatrix();
+
+		GLfloat  lightPos2[]={0,0,0,1};
+
+
+		GLfloat  diffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f};
+		GLfloat spotDir[]={0,-1,-0.05};
+		glLightfv(GL_LIGHT2,GL_DIFFUSE,diffuse);
+		glLightfv(GL_LIGHT2,GL_SPOT_DIRECTION,spotDir);
+		glLightfv(GL_LIGHT2, GL_POSITION, lightPos2);
+		glLightf(GL_LIGHT2,GL_SPOT_CUTOFF,60.0f);
+		glLightf(GL_LIGHT2,GL_SPOT_EXPONENT,10.0f);
+
+	
+}	glPopMatrix();
 
 	/* Neck and head */
-
+glColor3f(0.8,0.8,0.8);
 	glPushMatrix();
 	{
 		glTranslatef(0.0, headPosY, 0.0);
@@ -322,38 +471,45 @@ void model::drawModel() {
 	}
 	glPopMatrix();
 
+	glPopAttrib();
 }
 
 
 void model::makeLeftWing() {
 	glNewList(12, GL_COMPILE);
-	glBegin(GL_POLYGON);             
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glColor3f(0.8,0.8,0.8);
+	vector<float> norm= normal( 0.4, 0.0, 0.0,0.4, 1.0, 0.0, 0.0, 0.0, 0.0);  
+	glBegin(GL_POLYGON);
+	glNormal3f(norm[0], norm[1], norm[2]);              
 	glVertex3f(-0.4f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, -0.3125f, 0.541f);
 	glVertex3f(-0.35f, -0.3125f, 0.541f);
 	glEnd();
 	// Front face  (z = 1.0f)
-	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+	norm = normal( 0.0, -0.3125, 0.541,-0.35, -0.3125, 0.541, 0.0, -0.9375, 0.541);
+	glBegin(GL_POLYGON);
+glColor3f(0,0,0);
+	glNormal3f(norm[0], norm[1], norm[2]); 
 	glVertex3f(-0.35f,  -0.3125f, 0.541f);
 	glVertex3f(0.0f,  -0.3125f, 0.541f);
 	glVertex3f(0.0f, -0.9375f, 0.541f);
 	glVertex3f(-0.35f, -0.9375f, 0.541f);
 	glEnd();
-
 	//Bottom face (y=-1.0f)
-	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	norm = normal( 0.0, -0.9375, 0.541,-0.35, -0.9375, 0.541, 0.0, -1.4, 0.0);
+	glBegin(GL_POLYGON);
+glColor3f(0.8,0.8,0.8);
+	glNormal3f(norm[0], norm[1], norm[2]); 
 	glVertex3f(-0.35f, -0.9375f,  0.541f);
 	glVertex3f(0.0f, -0.9375f,  0.541f);
 	glVertex3f(0.0f, -1.4f, 0.0f);
 	glVertex3f(-0.4f, -1.4f,0.0f);
 	glEnd();
 
+	norm = normal( -0.35, -0.9375, 0.541, -0.35, -0.3125, 0.541,-0.4, -1.4, 0.0);
 	glBegin(GL_POLYGON);
-	glColor3f(0.5f,0.5f, 0.5f);
+	glNormal3f(norm[0], norm[1], norm[2]); 
 	glVertex3f(-0.4f, -0.0f, 0.0f);
 	glVertex3f(-0.35f, -0.3125f, 0.541f); 
 	glVertex3f(-0.35f, -0.9375, 0.541f);
@@ -365,16 +521,20 @@ void model::makeLeftWing() {
 
 void model::makeRightWing() {
 	glNewList(13, GL_COMPILE);
-	glBegin(GL_POLYGON);             
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glColor3f(0.8,0.8,0.8);
+	glBegin(GL_POLYGON);
+	vector<float> norm= normal( 0.4, 0.0, 0.0, 0.4, 1.0, 0.0,0.0, 0.0, 0.0);  
+	glNormal3f(norm[0], norm[1], norm[2]);           
 	glVertex3f(0.4f, 0.0f, 0.0f);
 	glVertex3f(0.0f, 0.0f, 0.0f);
 	glVertex3f(0.0f, -0.3125f, 0.541f);
 	glVertex3f(0.35f, -0.3125f, 0.541f);
 	glEnd();
 	// Front face  (z = 1.0f)
+	norm = normal(0.35, -0.3125, 0.541, 0.0, -0.3125, 0.541, 0.0, -0.9375, 0.541);
 	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+glColor3f(0,0,0);
+	glNormal3f(norm[0], norm[1], norm[2]); 
 	glVertex3f(0.35f,  -0.3125f, 0.541f);
 	glVertex3f(0.0f,  -0.3125f, 0.541f);
 	glVertex3f(0.0f, -0.9375f, 0.541f);
@@ -382,16 +542,20 @@ void model::makeRightWing() {
 	glEnd();
 
 	//Bottom face (y=-1.0f)
-	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	norm = normal(0.35, -0.9375, 0.541, 0.0, -0.9375, 0.541, 0.0, -1.4, 0.0);
+	glBegin(GL_POLYGON);
+	glColor3f(0.8,0.8,0.8);
+	glNormal3f(norm[0], norm[1], norm[2]);  
 	glVertex3f(0.35f, -0.9375f,  0.541f);
 	glVertex3f(0.0f, -0.9375f,  0.541f);
 	glVertex3f(0.0f, -1.4f, 0.0f);
 	glVertex3f(0.4f, -1.4f,0.0f);
 	glEnd();
 
+
+	norm = normal(0.35, -0.3125, 0.541, 0.35, -0.9375, 0.541, 0.4, -1.4, 0.0);
 	glBegin(GL_POLYGON);
-	glColor3f(0.5f,0.5f, 0.5f);
+	glNormal3f(norm[0], norm[1], norm[2]); 
 	glVertex3f(0.4f, -0.0f, 0.0f);
 	glVertex3f(0.35f, -0.3125f, 0.541f); 
 	glVertex3f(0.35f, -0.9375, 0.541f);
@@ -403,7 +567,7 @@ void model::makeRightWing() {
 
 void model::makeHead() {
 	glNewList(7, GL_COMPILE);
-	glScalef(0.15,0.15,0.15);
+	glScalef(0.12,0.12,0.12);
 	glCallList(9);
 	glEndList();
 }
@@ -411,13 +575,81 @@ void model::makeHead() {
 void model::makeTorso() {
 
 	glNewList(3, GL_COMPILE);
+	glColor3f(1.0,0,0);
 	glScalef(0.2,0.25,0.1);
-	glCallList(9);
+	glBegin(GL_POLYGON);  
+	glNormal3f( 0.0f, 1.0f, 0.0f);
+	glVertex3f( 1.0f, 1.0f, -1.0f);
+	glVertex3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(-1.0f, 1.0f,  1.0f);
+	glVertex3f(-1.0f, 1.0f,  -1.0f);
+	glEnd();
+
+	// Back face  (z = 1.0f)
+	glBegin(GL_POLYGON); 
+	glNormal3f(0,0,0);
+	glVertex3f( 1.0f, -1.0f, 1.0f);
+	glVertex3f(-1.0f, -1.0f, 1.0f);
+	glVertex3f(-1.0f,  1.0f, 1.0f);
+	glVertex3f( 1.0f,  1.0f, 1.0f);
+	glEnd(); 
+	
+
+
+	//Bottom face (y=-1.0f)
+	glBegin(GL_POLYGON); 
+	glNormal3f(0,-1,0);
+
+	glVertex3f( 1.0f, -1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f,  -1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glVertex3f( -1.0f, -1.0f, 1.0f);
+	glEnd(); 
+
+
+	// Front face (z = -1.0f)
+	
+	glBindTexture (GL_TEXTURE_2D,3);
+	glBegin(GL_QUADS); 
+	glColor3f(1,1,1);
+	glNormal3f(0,0,-1);
+		glTexCoord2f (0.0, 1.0);
+	glVertex3f( 1.0f,  1.0f, -1.0f);
+		glTexCoord2f (0.0, 0.0);
+	glVertex3f(1.0f,  -1.0f, -1.0f);
+		glTexCoord2f (0.95, 0.0);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+		glTexCoord2f (0.95, 1.0);
+	glVertex3f(-1.0f, 1.0f, -1.0f);
+	glEnd();
+
+glBindTexture (GL_TEXTURE_2D,0);
+
+	// Left face (x = -1.0f)
+	glBegin(GL_POLYGON);
+	glColor3f(1,0,0);
+	glNormal3f(-1,0,0);
+	glVertex3f(-1.0f,  1.0f,  1.0f);
+	glVertex3f(-1.0f,  1.0f, -1.0f);
+	glVertex3f(-1.0f, -1.0f, -1.0f);
+	glVertex3f(-1.0f, -1.0f,  1.0f);
+	glEnd(); 
+
+	// Right face (x = 1.0f)
+	glBegin(GL_POLYGON); 
+	glNormal3f(1,0,0);
+	glVertex3f(1.0f,  1.0f, -1.0f);
+	glVertex3f(1.0f,  1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f,  1.0f);
+	glVertex3f(1.0f, -1.0f, -1.0f);
+
+	glEnd();
 	glEndList();
 }
 
 void model::makeLeg() {
 	glNewList(5, GL_COMPILE);
+	glColor3f(0,0,1);
 	glScalef(0.4,0.5,0.3);
 	glTranslatef(0,-1,0);
 	glCallList(9);
@@ -426,7 +658,8 @@ void model::makeLeg() {
 
 void model::makeThigh() {
 	glNewList(4, GL_COMPILE);
-	glScalef(0.26,0.5,0.3);
+	glColor3f(0.8,0.8,0.8);
+	glScalef(0.2,0.5,0.25);
 	glTranslatef(0,-1,0);
 	glCallList(9);
 	glEndList();
@@ -434,7 +667,8 @@ void model::makeThigh() {
 
 void model::makeLowerArm() {
 	glNewList(2, GL_COMPILE);
-	glScalef(0.6,0.1,0.1);
+	glColor3f(0,0,1);
+	glScalef(0.5,0.2,0.2);
 	glTranslatef(1,0,0);
 	glCallList(9);
 	glEndList();
@@ -442,7 +676,9 @@ void model::makeLowerArm() {
 
 void model::makeUpperArm() {
 	glNewList(1, GL_COMPILE);
-	glScalef(0.6,0.1,0.3);
+	glColor3f(0.8,0.8,0.8);
+
+	glScalef(0.6,0.15,0.15);
 	glTranslatef(0.9,0,0);
 	glCallList(9);
 	glEndList();
@@ -458,6 +694,8 @@ void model::makeNeck() {
 
 void model::makeHand(){
 	glNewList(10,GL_COMPILE);
+
+
 	glScalef(0.1,0.1,0.1);
 	glCallList(9);
 	glEndList();
@@ -465,6 +703,7 @@ void model::makeHand(){
 
 void model::makeFoot(){
 	glNewList(11,GL_COMPILE);
+
 	glTranslatef(0,0,-0.1);
 	glScalef(0.2,0.1,0.35);
 	glCallList(9);
@@ -474,6 +713,7 @@ void model::makeFoot(){
 
 void model::makeWheel(){
 	glNewList(14,GL_COMPILE);
+	glColor3f(0.0,0.0,.0);
 	float segs=15;
 	float step=(360/segs)*3.14/180;
 	float radius=0.4;
@@ -481,7 +721,7 @@ void model::makeWheel(){
 	float thickness=0.3;
 	glTranslatef(0,0,-thickness/2);
 	glBegin(GL_TRIANGLE_FAN);
-
+	glNormal3f(0,0,-1.0f);
 	glVertex3f(0,0,0);
 	for(int i=0;i<segs;++i){
 		x=sinf(step*i)*radius;
@@ -493,6 +733,8 @@ void model::makeWheel(){
 
 	glTranslatef(0,0,thickness);
 	glBegin(GL_TRIANGLE_FAN);
+	glNormal3f(0,0,1.0f);
+
 	glVertex3f(0,0,0);
 	for(int i=0;i<segs;++i){
 		x=sinf(step*i)*radius;
@@ -502,31 +744,47 @@ void model::makeWheel(){
 	glVertex3f(0,radius,0);
 	glEnd();
 	glTranslatef(0,0,-thickness);
-	glBegin(GL_QUAD_STRIP);
+
+	float x1, y1;
 	for(int i=0;i<segs;++i){
+		glBegin(GL_QUADS);
+
+
+
 		x=sinf(step*i)*radius;
 		y=cosf(step*i)*radius;
+		x1=sinf(step*(i+1))*radius;
+		y1=cosf(step*(i+1))*radius;
+		vector<float> norm= normal(x,y,0,x,y,thickness,x1,y1,thickness);  
+
+		glNormal3f(norm[0], norm[1], norm[2]);   
 		glVertex3f(x,y,0);
 		glVertex3f(x,y,thickness);
+		glVertex3f(x1,y1,thickness);
+		glVertex3f(x1,y1,0);
+		glEnd();
+
 	}
-	glVertex3f(0,radius,0);
-	glVertex3f(0,radius,thickness);
-	glEnd();
+	//	glVertex3f(0,radius,0);
+	//	glVertex3f(0,radius,thickness);
+	//	glEnd();
 	glEndList();
 
 }
 void model::makeCube() {
+
 	glNewList(9, GL_COMPILE);
-	glBegin(GL_POLYGON);             
-	glColor3f(0.0f, 1.0f, 0.0f);     // Green
+	glBegin(GL_POLYGON);  
+	glNormal3f( 0.0f, 1.0f, 0.0f);
 	glVertex3f( 1.0f, 1.0f, -1.0f);
 	glVertex3f(1.0f, 1.0f, 1.0f);
 	glVertex3f(-1.0f, 1.0f,  1.0f);
 	glVertex3f(-1.0f, 1.0f,  -1.0f);
 	glEnd();
+
 	// Front face  (z = 1.0f)
 	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.0f, 0.0f);     // Red
+	glNormal3f(0,0,1);
 	glVertex3f( 1.0f,  1.0f, 1.0f);
 	glVertex3f(1.0f,  -1.0f, 1.0f);
 	glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -535,7 +793,7 @@ void model::makeCube() {
 
 	//Bottom face (y=-1.0f)
 	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.5f, 0.0f);     // Orange
+	glNormal3f(0,-1,0);
 	glVertex3f( 1.0f, -1.0f,  1.0f);
 	glVertex3f(1.0f, -1.0f,  -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
@@ -545,27 +803,30 @@ void model::makeCube() {
 
 	// Back face (z = -1.0f)
 	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 1.0f, 0.0f);     // Yellow
+	glNormal3f(0,0,-1);
 	glVertex3f( 1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f,  1.0f, -1.0f);
 	glVertex3f( 1.0f,  1.0f, -1.0f);
 	glEnd(); 
+
 	// Left face (x = -1.0f)
-	glBegin(GL_POLYGON); 
-	glColor3f(0.0f, 0.0f, 1.0f);     // Blue
+	glBegin(GL_POLYGON);
+	glNormal3f(-1,0,0);
 	glVertex3f(-1.0f,  1.0f,  1.0f);
 	glVertex3f(-1.0f,  1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f, -1.0f);
 	glVertex3f(-1.0f, -1.0f,  1.0f);
 	glEnd(); 
+
 	// Right face (x = 1.0f)
 	glBegin(GL_POLYGON); 
-	glColor3f(1.0f, 0.0f, 1.0f);     // Magenta
+	glNormal3f(1,0,0);
 	glVertex3f(1.0f,  1.0f, -1.0f);
 	glVertex3f(1.0f,  1.0f,  1.0f);
 	glVertex3f(1.0f, -1.0f,  1.0f);
 	glVertex3f(1.0f, -1.0f, -1.0f);
+
 	glEnd();
 	glEndList();
 }
@@ -606,12 +867,18 @@ void model::toCar(){
 		iter++;
 	}
 	else if(iter<140+40){
-		bodyAngleX-=3;	
+		bodyAngleX+=3;	
 		iter++;
 	}
-	
+
 	else if(iter<170+40){
-		bodyAngleZ+=5;
+		bodyAngleZ-=6;
+		//bodyAngleY+=1;
+
+		iter++;
+	}
+	else if(iter<220){
+		bodyPosY-=0.1;
 		iter++;
 	}
 	else {
@@ -621,15 +888,20 @@ void model::toCar(){
 }
 
 void model::toHumanoid(){
-	if(iter<30){
-		bodyAngleZ-=5;
+	if(iter<10){
+		bodyPosY+=0.1;
 		iter++;
 	}
-	else if(iter<60){
-		bodyAngleX+=3;	
+	else if(iter<30+10){
+		bodyAngleZ+=(180-bodyAngleZ)/(40.0-iter);
+		//bodyAngleY-=1;
 		iter++;
 	}
-	else if(iter<50+60){
+	else if(iter<60+10){
+		bodyAngleX-=3;	
+		iter++;
+	}
+	else if(iter<50+60+10){
 		rightWingAngleX -=0.25;
 		rightWingAngleZ -= 1;
 		leftWingAngleZ += 1;
@@ -638,14 +910,14 @@ void model::toHumanoid(){
 		iter++;
 	}
 
-	else if(iter<80+60){
+	else if(iter<80+60+10){
 		leftShoulderAngleZ-=0.35;
 		leftElbowAngleZ+=0.1;
 		rightShoulderAngleZ-=0.35;
 		rightElbowAngleZ +=0.1;
 		iter++;
 	}
-	else if(iter<110+60){
+	else if(iter<110+60+10){
 		leftThighAngleZ -= 0.25;
 		rightThighAngleZ += 0.25;
 		leftFootAngleZ += 0.25;
@@ -653,7 +925,7 @@ void model::toHumanoid(){
 
 		iter++;
 	}
-	else if(iter<110+60+40){
+	else if(iter<110+60+40+10){
 		headPosY+=0.01;
 		iter++;
 	}

@@ -1,5 +1,9 @@
 #include <GL/glew.h>
 #include <iostream>
+#include <GLFW/glfw3.h>
+#include <math.h>
+#include <vector>
+#include <stdio.h>
 using namespace std;	
 struct model{
 	float leftShoulderAngleX;
@@ -69,17 +73,25 @@ struct model{
 	float leftWingAngleX;
 	float leftWingAngleY;
 	float leftWingAngleZ;
-
+	float bodyPosX;
+	float bodyPosY;
+	float bodyPosZ;
 	int mode;
+	float carPosZ;
+	float carPosX;
+	float carTurn;
 	void toCar();
 	void toHumanoid();	
-	
+	bool headLight;
 	float headPosY;
 	model();
-
+	int skyTex;
+	int groundTex;
+	int logoTex;
 	void makeModel();
 
 	void drawModel();
+	int camera;	
 
 	private :
 
@@ -100,6 +112,9 @@ struct model{
 	
 	int iter;
 	int totalIter;
-	
-};
 
+
+};
+GLuint loadBMP_custom(const char * imagepath);
+
+GLuint LoadTexture(const char* TextureName);

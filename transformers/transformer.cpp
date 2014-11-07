@@ -3,12 +3,11 @@
 
 void renderGL(void) {
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
+
 	glPushMatrix();
-//glTranslatef(0,0,1);
-	glScalef(0.5,0.5,0.5);
-	//	glRotatef(40,-0.5,0.0,0.1);
 	
-	model1.makeModel();	
+	//	glRotatef(40,-0.5,0.0,0.1);
+
 	model1.drawModel();
 	glPopMatrix();
 }
@@ -49,11 +48,13 @@ int main(int argc, char *argv[]){
 
 	// For directly retrieving the current size of the framebuffer of a window.
 	glfwGetFramebufferSize(window, &win_width, &win_height);
-
+csX75::initGL();
 	csX75::framebuffer_size_callback(window, win_width, win_height);
 	//Initialize GL state
-	csX75::initGL();
-
+	
+	model1.groundTex = csX75::loadBMP("./ground.bmp");
+	model1.skyTex= csX75::loadBMP("./sky.bmp");
+	model1.logoTex=csX75::loadBMP("./decept.bmp");
 	// Loop until the user closes the window
 	// Run the state is set to close window by clicking in close or through keyboard like Alt+F4 
 	while (glfwWindowShouldClose(window) == 0)
